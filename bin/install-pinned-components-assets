@@ -18,11 +18,20 @@ trap 'rm -rf "$yarn_tool_dir"' EXIT
 npm pack --silent --ignore-scripts --pack-destination "$yarn_tool_dir" yarn@1.22.22 > /dev/null
 tar -xzf "$yarn_tool_dir/yarn-1.22.22.tgz" -C "$yarn_tool_dir"
 
+# The Bundler Git checkout sits below the application's Yarn 3 project.
+# Install from the component's own exact package manifest and lockfile outside
+# that directory, as the original released RubyGem build does.
+frontend_dir="$yarn_tool_dir/frontend"
+mkdir -p "$frontend_dir"
+cp "$component_dir/package.json" "$component_dir/yarn.lock" "$component_dir/.yarnrc" "$frontend_dir/"
 (
-  cd "$component_dir"
+  cd "$frontend_dir"
   test "$(YARN_IGNORE_PATH=1 node "$yarn_tool_dir/package/bin/yarn.js" --version)" = "1.22.22"
   YARN_IGNORE_PATH=1 node "$yarn_tool_dir/package/bin/yarn.js" install --frozen-lockfile --production=true --ignore-scripts --non-interactive
   node -e 'const fs=require("node:fs"); const p="node_modules/govuk-frontend/package.json"; if (!fs.existsSync(p) || JSON.parse(fs.readFileSync(p)).version !== "6.1.0") process.exit(1);'
   test -f node_modules/govuk-frontend/dist/govuk/_base.scss
 )
+mkdir -p "$component_dir/node_modules"
+cp -a "$frontend_dir/node_modules/." "$component_dir/node_modules/"
+test -f "$component_dir/node_modules/govuk-frontend/dist/govuk/_base.scss"
 echo 'Verified pinned component frontend assets are installed.'
