@@ -1,0 +1,14 @@
+name: Setup Node
+
+description: Install the native Collections Node version and locked application dependencies
+runs:
+  using: composite
+  steps:
+    - name: Setup Node
+      uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+      with:
+        node-version: lts/*
+
+    - name: Install JavaScript dependencies from the committed Yarn 3.4.1 release
+      shell: bash
+      run: node .yarn/releases/yarn-3.4.1.cjs install --immutable
