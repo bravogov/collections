@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Git-sourced component dependencies do not include the node_modules assets
+# that the published upstream RubyGem packages after its Yarn installation.
+component_dir="$(bundle show govuk_publishing_components)"
+expected_sha='e107a9c6e01d4bd9facf97af22ec60ca3e40fe3d'
+actual_sha="$(git -C "$component_dir" rev-parse HEAD)"
+if [[ "$actual_sha" != "$expected_sha" ]]; then
+  echo "Refusing to package unexpected publishing components: $actual_sha" >&2
+  exit 1
+fi
+
+(
+  cd "$component_dir"
+  npm exec --yes --package=yarn@1.22.22 -- yarn install --frozen-lockfile --production=true --ignore-scripts --non-interactive
+  node -e 'const fs=require("node:fs"); const p="node_modules/govuk-frontend/package.json"; if (!fs.existsSync(p) || JSON.parse(fs.readFileSync(p)).version !== "6.1.0") process.exit(1);'
+  test -f node_modules/govuk-frontend/dist/govuk/_base.scss
+)
+echo 'Verified pinned component frontend assets are installed.'

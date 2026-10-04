@@ -42,8 +42,8 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          repository: alphagov/collections
-          ref: ${{ inputs.ref }}
+          repository: ${{ github.repository }}
+          ref: ${{ inputs.ref || github.event.pull_request.head.sha || github.sha }}
       - uses: ruby/setup-ruby@e8944e80fb94b20106697132f8c20c665fab29e9 # v1.325.0
         with:
           bundler-cache: true
