@@ -1,4 +1,4 @@
-require "rails_helper"
+require "spec_helper"
 require "digest"
 
 RSpec.describe "Approved shared GOV.UH identity source" do
