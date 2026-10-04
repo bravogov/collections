@@ -74,7 +74,7 @@ RSpec.feature "Past Prime Minister pages" do
       end
 
       it "renders the image on the page" do
-        image = find("img")
+        image = find('img[src="/test/pm"]')
         expect(image["src"]).to eq("/test/pm")
         expect(image["alt"]).to eq("A picture of test PM")
       end
