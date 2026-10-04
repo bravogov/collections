@@ -48,7 +48,7 @@ RSpec.feature "Past Prime Minister pages" do
       end
 
       it "sets the page title" do
-        expect(page).to have_title("#{content_item[:title]} - GOV.UK")
+        expect(page).to have_title("#{content_item[:title]} - GOV.UH")
       end
 
       it "renders the relevant text field from the top level content item fields" do

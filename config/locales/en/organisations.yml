@@ -71,7 +71,7 @@ en:
     notices:
       changed_name_html: "%{title} is now called <a href='%{link_href}'>%{link_text}</a>"
       devolved_html: "%{title} is a body of <a href='%{link_href}'>%{link_text}</a>"
-      joining: "%{title} will soon be incorporated into GOV.UK"
+      joining: "%{title} will soon be incorporated into GOV.UH"
       left_gov: "%{title} is now independent of the UK government"
       merged_html: "%{title} became part of <a href='%{link_href}'>%{link_text}</a> in %{updated}"
       merged_no_date_html: "%{title} is now part of <a href='%{link_href}'>%{link_text}</a>"

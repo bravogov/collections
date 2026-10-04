@@ -29,7 +29,7 @@ RSpec.describe FeedsController, type: :controller do
     get :organisation, params: { organisation_name: organisation_slug(content_item), format: "atom" }
 
     expect(response).to have_http_status(:success)
-    expect(response.body).to match(/<title>Ministry of Magic - Activity on GOV.UK<\/title>/)
+    expect(response.body).to match(/<title>Ministry of Magic - Activity on GOV.UH<\/title>/)
   end
 
   it "sets the Access-Control-Allow-Origin header for atom pages" do

@@ -32,7 +32,7 @@ RSpec.feature "Step by step nav pages" do
     stub_content_store_has_item(content_item["base_path"], content_item)
 
     visit content_item["base_path"]
-    expect(page).to have_title("#{content_item['title']} - GOV.UK")
+    expect(page).to have_title("#{content_item['title']} - GOV.UH")
   end
 
   def step_nav_example

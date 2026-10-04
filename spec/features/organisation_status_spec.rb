@@ -249,7 +249,7 @@ RSpec.feature "Organisation status" do
   scenario "displays a joining organisation page correctly" do
     visit "/government/organisations/joining"
     expect(page).to have_selector(".gem-c-organisation-logo")
-    expect(page).to have_selector(".gem-c-notice", text: "Joining organisation will soon be incorporated into GOV.UK")
+    expect(page).to have_selector(".gem-c-notice", text: "Joining organisation will soon be incorporated into GOV.UH")
     expect(page).not_to have_selector(".gem-c-notice a")
     expect(page).to have_selector(".gem-c-govspeak")
     expect(page).to have_content(/This organisation has a status of joining./i)

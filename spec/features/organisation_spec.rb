@@ -103,13 +103,13 @@ RSpec.describe "Organisation pages" do
 
   it "sets the page title" do
     visit "/government/organisations/prime-ministers-office-10-downing-street"
-    expect(page).to have_title("Prime Minister's Office, 10 Downing Street - GOV.UK")
+    expect(page).to have_title("Prime Minister's Office, 10 Downing Street - GOV.UH")
 
     visit "/government/organisations/attorney-generals-office"
-    expect(page).to have_title("Attorney General's Office - GOV.UK")
+    expect(page).to have_title("Attorney General's Office - GOV.UH")
 
     visit "/government/organisations/charity-commission"
-    expect(page).to have_title("Charity Commission - GOV.UK")
+    expect(page).to have_title("Charity Commission - GOV.UH")
   end
 
   describe "no10 banner" do
