@@ -76,7 +76,7 @@ module ApplicationHelper
     return if path.empty?
     return unless path.match?(%r{\A/[A-Za-z0-9/_-]+\z})
 
-    "#{Plek.new.website_root.to_s.sub(%r{/$}, "")}#{path}"
+    "#{Plek.new.website_root.to_s.sub(%r{/$}, '')}#{path}"
   end
 
   def joined_list(elements)
