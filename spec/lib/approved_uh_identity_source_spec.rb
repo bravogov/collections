@@ -35,5 +35,4 @@ RSpec.describe "Approved shared GOV.UH identity source" do
     expect(survey).not_to include("smartsurvey.co.uk")
     expect(survey).to include('href="/contact/"')
   end
-
 end
