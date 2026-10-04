@@ -18,6 +18,7 @@ RUN bootsnap precompile --gemfile .
 FROM --platform=$TARGETPLATFORM $base_image
 
 ENV GOVUK_APP_NAME=collections
+ENV BUNDLE_FROZEN=true
 
 WORKDIR $APP_HOME
 COPY --from=builder $BUNDLE_PATH $BUNDLE_PATH
