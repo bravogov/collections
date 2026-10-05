@@ -6,6 +6,8 @@ class Organisation
   attr_reader :content_item
 
   HMCTS_CONTENT_ID = "6f757605-ab8f-4b62-84e4-99f79cf085c2".freeze
+  CHIEF_MINISTERS_OFFICE_SLUG = "chief-ministers-office-10-harrington-court".freeze
+  NO10_COMPARATOR_BRAND = "prime-ministers-office-10-downing-street".freeze
 
   CUSTOM_BANNERS_DATA = {
     "department-for-business-and-trade" => "This organisation is changing. It’s now called the <a href=\"https://www.gov.uk/government/organisations/department-for-business-innovation-science-and-trade\">Department for Business, Innovation, Science and Trade</a>.",
@@ -42,13 +44,13 @@ class Organisation
   end
 
   def brand
-    return slug if is_no_10?
+    return NO10_COMPARATOR_BRAND if is_no_10?
 
     details["brand"]
   end
 
   def is_no_10?
-    slug == "prime-ministers-office-10-downing-street"
+    [NO10_COMPARATOR_BRAND, CHIEF_MINISTERS_OFFICE_SLUG].include?(slug)
   end
 
   def is_civil_service?
@@ -60,7 +62,7 @@ class Organisation
   end
 
   def more_videos_link
-    is_no_10? ? "https://www.youtube.com/number10gov" : nil
+    nil
   end
 
   def is_sub_organisation?
