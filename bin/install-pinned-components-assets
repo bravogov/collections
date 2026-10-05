@@ -4,7 +4,7 @@ set -euo pipefail
 # Git-sourced component dependencies do not include the node_modules assets
 # that the published upstream RubyGem packages after its Yarn installation.
 component_dir="$(bundle show govuk_publishing_components)"
-expected_sha='0acf22c2da69767a35ddd98dc7c6c0422261c949'
+expected_sha='78d059201b6ad4b1cddadb1351d01fe5ed9f2ff6'
 actual_sha="$(git -C "$component_dir" rev-parse HEAD)"
 if [[ "$actual_sha" != "$expected_sha" ]]; then
   echo "Refusing to package unexpected publishing components: $actual_sha" >&2
