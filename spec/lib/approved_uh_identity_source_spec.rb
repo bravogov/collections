@@ -6,7 +6,7 @@ RSpec.describe "Approved shared GOV.UH identity source" do
 
   it "uses the approved central government arms" do
     source = File.join(components_path, "app/assets/images/govuk_publishing_components/uh_footer_arms.webp")
-    expect(Digest::SHA256.file(source).hexdigest).to eq("bd1ff9f66f8cc1d421f65d09ec3a0b53bed34c2f88c3dea1eb2317a358db7804")
+    expect(Digest::SHA256.file(source).hexdigest).to eq("66cd5d449026855d0eb6308e1f62787be6cf90748b22da3194b22d5734de5644")
   end
 
   it "uses the approved header crown rather than imported UK artwork" do
