@@ -15,7 +15,7 @@ RSpec.feature "Past Chancellors pages" do
   end
 
   it "sets the page title" do
-    expect(page).to have_title("#{content_item[:title]} - GOV.UK")
+    expect(page).to have_title("#{content_item[:title]} - GOV.UH")
   end
 
   it "sets renders the title on the page" do

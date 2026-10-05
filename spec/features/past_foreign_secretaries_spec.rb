@@ -17,7 +17,7 @@ RSpec.feature "Past Foreign Secretaries pages" do
 
   describe "index page" do
     it "sets the page title" do
-      expect(page).to have_title("#{content_item[:title]} - GOV.UK")
+      expect(page).to have_title("#{content_item[:title]} - GOV.UH")
     end
 
     it "sets renders the title on the page" do
@@ -67,7 +67,7 @@ RSpec.feature "Past Foreign Secretaries pages" do
   describe "individual foreign secretary show page" do
     it "sets the page title" do
       visit "#{base_path}/austen-chamberlain"
-      expect(page).to have_title("History of Sir Austen Chamberlain - GOV.UK")
+      expect(page).to have_title("History of Sir Austen Chamberlain - GOV.UH")
     end
 
     it "sets renders the title on the page" do

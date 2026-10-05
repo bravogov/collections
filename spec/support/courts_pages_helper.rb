@@ -30,7 +30,7 @@ module CourtPagesHelper
   end
 
   def the_correct_title
-    expect(page).to have_title("#{@title} - GOV.UK")
+    expect(page).to have_title("#{@title} - GOV.UH")
     expect(page).to have_selector(".gem-c-organisation-logo", text: @title)
 
     # Does not have the No. 10 banner
@@ -38,7 +38,7 @@ module CourtPagesHelper
   end
 
   def the_courts_title
-    expect(page).to have_title("#{@title} - GOV.UK")
+    expect(page).to have_title("#{@title} - GOV.UH")
     expect(page).to have_selector(".gem-c-heading__text", text: @title)
   end
 

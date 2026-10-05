@@ -1,0 +1,40 @@
+name: Run Jasmine
+
+on:
+  workflow_call:
+    inputs:
+      useWithRails:
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  run-jasmine:
+    name: Run Jasmine
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          show-progress: false
+
+      - name: Setup Ruby
+        if: inputs.useWithRails
+        uses: ruby/setup-ruby@14594264cd68ce8a2345dd349bc3d138a4ef85c8 # v1.327.0
+        with:
+          bundler-cache: true
+
+      - name: Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Install pinned component frontend assets
+        if: inputs.useWithRails
+        run: bash bin/install-pinned-components-assets
+
+      - name: Precompile Rails assets
+        if: inputs.useWithRails
+        uses: alphagov/govuk-infrastructure/.github/actions/precompile-rails-assets@main
+
+      - name: Run Jasmine
+        run: yarn run jasmine-browser-runner runSpecs

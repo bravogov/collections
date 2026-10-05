@@ -12,7 +12,7 @@ RSpec.feature "World Location News pages" do
 
   it "sets the page title" do
     visit base_path
-    expect(page).to have_title("UK and Mock Country - GOV.UK")
+    expect(page).to have_title("UK and Mock Country - GOV.UH")
   end
 
   it "sets the document type" do
@@ -322,7 +322,7 @@ RSpec.feature "World Location News pages" do
 
     it "renders the news page" do
       visit base_path
-      expect(page).to have_title("UK and Mock Country - GOV.UK")
+      expect(page).to have_title("UK and Mock Country - GOV.UH")
       expect(page).to have_text("International delegation")
     end
   end

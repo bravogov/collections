@@ -1,0 +1,91 @@
+name: Native Collections AMD64 source acceptance
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: native-collections-amd64-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-native-amd64:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      RUBY_IMAGES_SHA: aed3fb2c9efd701a92c28604c6d325d90a163fe8
+      RUBY_MAJOR: "3.4"
+      RUBY_VERSION: "3.4.10"
+      RUBY_CHECKSUM: ecee2d072a14f2d14347dd56dfd8fe5c3130abf5117bfaacbda0f4ef9cc429ec
+      BASE_IMAGE: govuk-ruby-base-source:3.4.10-amd64
+      BUILDER_IMAGE: govuk-ruby-builder-source:3.4.10-amd64
+      APP_IMAGE: govuh-collections-native-source:${{ github.event.pull_request.head.sha || github.sha }}-amd64
+
+    steps:
+      - name: Checkout exact Collections source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          persist-credentials: false
+
+      - name: Checkout pinned GOV.UK Ruby image source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: alphagov/govuk-ruby-images
+          ref: ${{ env.RUBY_IMAGES_SHA }}
+          path: .govuk-ruby-images
+          persist-credentials: false
+
+      - name: Set up Docker Engine
+        uses: docker/setup-docker-action@2bf61fb9464cc67f0cbdeabed6aa0380accd1c70 # v5.5.0
+        with:
+          version: version=29.7.1
+
+      - name: Build original GOV.UK Ruby base image
+        run: |
+          set -euo pipefail
+          docker build --platform linux/amd64             --file .govuk-ruby-images/base.Dockerfile             --build-arg "RUBY_MAJOR=$RUBY_MAJOR"             --build-arg "RUBY_VERSION=$RUBY_VERSION"             --build-arg "RUBY_CHECKSUM=$RUBY_CHECKSUM"             --tag "$BASE_IMAGE"             .govuk-ruby-images
+
+      - name: Build original GOV.UK Ruby builder image
+        run: |
+          set -euo pipefail
+          docker build --platform linux/amd64             --file .govuk-ruby-images/builder.Dockerfile             --build-arg "BASE_IMAGE_REF=$BASE_IMAGE"             --build-arg "OWNER=alphagov"             --tag "$BUILDER_IMAGE"             .govuk-ruby-images
+
+      - name: Build unchanged native Collections Dockerfile
+        run: |
+          set -euo pipefail
+          docker build --platform linux/amd64             --file Dockerfile             --build-arg "base_image=$BASE_IMAGE"             --build-arg "builder_image=$BUILDER_IMAGE"             --tag "$APP_IMAGE"             .
+
+      - name: Verify native app and approved shared identity asset
+        run: |
+          set -euo pipefail
+          test "$(docker image inspect "$APP_IMAGE" --format '{{.Architecture}}')" = amd64
+          docker run --rm --entrypoint /bin/sh "$APP_IMAGE" -ec '
+            test -d public/assets
+            grep -R -l --include="*.css" "gem-c-search__input" public/assets >/dev/null
+            crown="$(find public/assets -type f -name "uh_header_crown-*.png" -print -quit)"
+            test -n "$crown"
+            echo "293218916b282a75c89326fab581942fe1f46652a32d122c17d47c9545398675  $crown" | sha256sum -c -
+          '
+          docker image inspect "$APP_IMAGE" --format '{{.Id}} {{.Os}}/{{.Architecture}}'
+
+      - name: Export immutable AMD64 candidate
+        run: |
+          set -euo pipefail
+          mkdir -p candidate-artifact
+          docker save "$APP_IMAGE" | gzip -1 > candidate-artifact/govuh-collections-native-amd64.tar.gz
+          sha256sum candidate-artifact/govuh-collections-native-amd64.tar.gz > candidate-artifact/SHA256SUMS
+          docker image inspect "$APP_IMAGE" --format '{{.Id}} {{.Os}}/{{.Architecture}}' > candidate-artifact/IMAGE-IDENTITY
+
+      - name: Upload short-lived candidate artefact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: govuh-collections-native-amd64-${{ env.SOURCE_SHA }}
+          path: candidate-artifact/
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0

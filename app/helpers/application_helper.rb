@@ -71,6 +71,14 @@ module ApplicationHelper
     end
   end
 
+  def uh_foi_guidance_url
+    path = ENV.fetch("UH_FOI_GUIDANCE_PATH", "")
+    return if path.empty?
+    return unless path.match?(%r{\A/[A-Za-z0-9/_-]+\z})
+
+    "#{Plek.new.website_root.to_s.sub(%r{/$}, '')}#{path}"
+  end
+
   def joined_list(elements)
     separator = if elements.any? { |word| word.include?(",") }
                   "; "

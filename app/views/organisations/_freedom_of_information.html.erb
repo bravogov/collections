@@ -17,9 +17,11 @@
     <%= render "govuk_publishing_components/components/govspeak", {
       } do %>
         <ol class="steps">
-          <li>
-            <%= t('organisations.foi.making_foi_requests.step1_html', how_to_path: 'https://www.gov.uk/make-a-freedom-of-information-request/the-freedom-of-information-act') %>
-          </li>
+          <% if (foi_guidance_url = uh_foi_guidance_url) %>
+            <li>
+              <%= t('organisations.foi.making_foi_requests.step1_html', how_to_path: foi_guidance_url) %>
+            </li>
+          <% end %>
           <li>
             <%= t('organisations.foi.making_foi_requests.step2_html', our_releases_path: @contacts.foi_previous_releases_link) %>
           </li>

@@ -52,7 +52,7 @@ jobs:
 
   test-javascript:
     name: Test JavaScript
-    uses: alphagov/govuk-infrastructure/.github/workflows/jasmine.yml@main
+    uses: ./.github/workflows/jasmine.yml
     with:
       useWithRails: true
 
@@ -60,7 +60,7 @@ jobs:
     name: Run Pact tests
     uses: ./.github/workflows/pact-verify.yml
     with:
-      ref: ${{ github.ref }}
+      ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
   test-ruby:
     name: Test Ruby
@@ -79,7 +79,10 @@ jobs:
           bundler-cache: true
 
       - name: Setup Node
-        uses: alphagov/govuk-infrastructure/.github/actions/setup-node@main
+        uses: ./.github/actions/setup-node
+
+      - name: Install pinned component frontend assets
+        run: bash bin/install-pinned-components-assets
 
       - name: Precompile assets
         uses: alphagov/govuk-infrastructure/.github/actions/precompile-rails-assets@main

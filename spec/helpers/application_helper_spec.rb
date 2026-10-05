@@ -127,6 +127,38 @@ RSpec.describe ApplicationHelper do
     end
   end
 
+  describe "#uh_foi_guidance_url" do
+    around do |example|
+      original = ENV["UH_FOI_GUIDANCE_PATH"]
+      example.run
+    ensure
+      ENV["UH_FOI_GUIDANCE_PATH"] = original
+    end
+
+    it "fails closed when no approved GOV.UH FOI guidance path is configured" do
+      ENV.delete("UH_FOI_GUIDANCE_PATH")
+      expect(helper.uh_foi_guidance_url).to be_nil
+    end
+
+    it "builds an official URL from a safe local path" do
+      ENV["UH_FOI_GUIDANCE_PATH"] = "/make-a-freedom-of-information-request/the-freedom-of-information-act"
+      allow(Plek).to receive(:new).and_return(double(website_root: "https://www.gov.uhrblx.com"))
+      expect(helper.uh_foi_guidance_url).to eq("https://www.gov.uhrblx.com/make-a-freedom-of-information-request/the-freedom-of-information-act")
+    end
+
+    it "rejects external, protocol-relative, query and traversal values" do
+      [
+        "https://www.gov.uk/example",
+        "//www.gov.uk/example",
+        "/example?redirect=https://www.gov.uk",
+        "/../example",
+      ].each do |value|
+        ENV["UH_FOI_GUIDANCE_PATH"] = value
+        expect(helper.uh_foi_guidance_url).to be_nil
+      end
+    end
+  end
+
   describe "joined_list" do
     context "when none of the elements contain a comma" do
       it "joins the elements using a comma separator" do

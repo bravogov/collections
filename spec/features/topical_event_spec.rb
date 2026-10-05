@@ -14,7 +14,7 @@ RSpec.feature "Topical Event pages" do
 
   it "sets the page title" do
     visit base_path
-    expect(page).to have_title("#{content_item['title']} - GOV.UK")
+    expect(page).to have_title("#{content_item['title']} - GOV.UH")
   end
 
   it "sets the page description" do
@@ -302,7 +302,7 @@ RSpec.feature "Topical Event pages" do
 
     it "sets the page title" do
       visit "#{base_path}.atom"
-      expect(page).to have_title("#{content_item['title']} - Activity on GOV.UK")
+      expect(page).to have_title("#{content_item['title']} - Activity on GOV.UH")
     end
 
     it "should include the correct entries" do

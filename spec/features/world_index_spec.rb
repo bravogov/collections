@@ -20,7 +20,7 @@ RSpec.feature "World index page" do
   end
 
   scenario "renders the webpage title" do
-    expect(page).to have_title("Help and services around the world - GOV.UK")
+    expect(page).to have_title("Help and services around the world - GOV.UH")
   end
 
   scenario "renders the page title" do

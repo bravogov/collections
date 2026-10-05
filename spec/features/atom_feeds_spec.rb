@@ -60,7 +60,7 @@ RSpec.feature "Atom feeds" do
 
   def then_i_can_see_the_government_feed
     title = page.first("feed title").text(:all)
-    expect("Activity on GOV.UK").to eq(title)
+    expect("Activity on GOV.UH").to eq(title)
   end
 
   def then_i_can_see_the_feed
@@ -70,7 +70,7 @@ RSpec.feature "Atom feeds" do
 
   def with_a_title
     title = page.first("feed title").text(:all)
-    expect("Ministry of Magic - Activity on GOV.UK").to eq(title)
+    expect("Ministry of Magic - Activity on GOV.UH").to eq(title)
   end
 
   def and_an_alternate_link
