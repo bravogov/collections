@@ -37,22 +37,12 @@ module Organisations
           post_addresses: contact["details"]["post_addresses"]&.map do |post|
             contact_address(post)
           end || [],
-          phone_numbers: contact["details"]["phone_numbers"]&.map do |phone|
-            {
-              title: phone["title"] || I18n.t("organisations.contact.telephone"),
-              number: phone["number"],
-            }
-          end || [],
           email_addresses: contact["details"]["email_addresses"]&.map do |email|
             make_email_link(email["email"])
           end || [],
-          links: (contact["details"]["contact_form_links"]&.map do |link|
+          links: contact["details"]["contact_form_links"]&.map do |link|
             make_link(link, foi_title(contact["details"]["title"], foi:), foi)
-          end || []) + (contact["details"]["quick_links"]&.filter_map do |link|
-            if link["title"] == "Discord" && link["url"].present?
-              link_to("Discord", link["url"], class: "govuk-link brand__color")
-            end
-          end || []),
+          end || [],
           description: contact_description(contact["details"]["description"]),
         }
       end
