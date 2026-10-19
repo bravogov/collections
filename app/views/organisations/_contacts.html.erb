@@ -22,7 +22,7 @@
         </address>
       <% end %>
 
-      <% if contact[:email_addresses].any? || contact[:links].any? || contact[:phone_numbers].any?  %>
+      <% if contact[:email_addresses].any? || contact[:links].any?  %>
         <div class="<%= contact[:post_addresses].any? ? "govuk-grid-column-one-half" : "govuk-grid-column-two-thirds" %>">
           <% if contact[:email_addresses].any? %>
             <div class="organisation__margin-bottom">
@@ -52,14 +52,7 @@
             </div>
           <% end %>
 
-          <% if contact[:phone_numbers].any? %>
-            <div class="organisation__margin-bottom">
-              <% contact[:phone_numbers].each do |phone| %>
-                <p class="organisation__paragraph"><%= phone[:title] %></p>
-                <p class="organisation__contact-number organisation__paragraph"><%= phone[:number] %></p>
-              <% end %>
-            </div>
-          <% end %>
+
 
         </div>
       <% end %>

@@ -37,12 +37,6 @@ module Organisations
           post_addresses: contact["details"]["post_addresses"]&.map do |post|
             contact_address(post)
           end || [],
-          phone_numbers: contact["details"]["phone_numbers"]&.map do |phone|
-            {
-              title: phone["title"] || I18n.t("organisations.contact.telephone"),
-              number: phone["number"],
-            }
-          end || [],
           email_addresses: contact["details"]["email_addresses"]&.map do |email|
             make_email_link(email["email"])
           end || [],
