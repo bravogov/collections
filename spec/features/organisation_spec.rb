@@ -44,6 +44,14 @@ RSpec.describe "Organisation pages" do
   end
 
   before do
+    # The Whitehall publishing contract advertises only genuine published
+    # About editions. A summary alone is not evidence of an About page.
+    content_item_attorney_general["details"]["ordered_corporate_information_pages"] ||= []
+    content_item_attorney_general["details"]["ordered_corporate_information_pages"] << {
+      "title" => "About us",
+      "href" => "/government/organisations/attorney-generals-office/about",
+    }
+
     stub_content_and_search(content_item_no10)
     stub_content_and_search(content_item_attorney_general)
     stub_content_and_search(content_item_charity_commission)
@@ -322,12 +330,14 @@ RSpec.describe "Organisation pages" do
     expect(page).to have_css(".gem-c-image-card .gem-c-image-card__title-link", text: "Rowena Collins Rice")
   end
 
-  it "show a link to the correct about page on Welsh and English pages" do
+  it "shows a Read more link only when the source advertises a published About edition" do
     visit "/government/organisations/attorney-generals-office"
     expect(page).to have_css("a[href='/government/organisations/attorney-generals-office/about']", text: "Read more about what we do")
 
-    visit "/government/organisations/office-of-the-secretary-of-state-for-wales.cy"
-    expect(page).to have_css("a[href='/government/organisations/office-of-the-secretary-of-state-for-wales/about.cy']", text: "Darllenwch fwy am beth rydyn ni'n wneud")
+    # The organisation page has public information but no published About
+    # edition; a fabricated About URL must not be shown.
+    visit "/government/organisations/charity-commission"
+    expect(page).not_to have_css("a[href='/government/organisations/charity-commission/about']")
   end
 
   it "shows translated text on welsh pages" do
