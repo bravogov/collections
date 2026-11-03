@@ -1,0 +1,63 @@
+<%# CMO-specific presentation while native Whitehall promotional features and contacts are being established. %>
+<section class="organisation__margin-bottom organisation__section-wrap" aria-label="Chief Minister's Office">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+      <div class="organisation__promotion">
+        <%= render "govuk_publishing_components/components/heading", {
+          text: "Meet the Chief Minister",
+          heading_level: 2,
+          padding: true,
+          margin_bottom: 3,
+          border_top: 5,
+          brand: @organisation.brand
+        } %>
+        <p class="govuk-body">The Chief Minister leads the Government of United Hampshire. The official role page provides the current officeholder, their responsibilities and a link to their biography.</p>
+        <p class="govuk-body"><%= link_to "Meet the Chief Minister", "/government/ministers/chief-minister", class: "govuk-link" %></p>
+      </div>
+    </div>
+    <div class="govuk-grid-column-one-half">
+      <div class="organisation__promotion">
+        <%= render "govuk_publishing_components/components/heading", {
+          text: "No. 10 Harrington Court",
+          heading_level: 2,
+          padding: true,
+          margin_bottom: 3,
+          border_top: 5,
+          brand: @organisation.brand
+        } %>
+        <p class="govuk-body">No. 10 Harrington Court is the Chief Minister's principal official executive office. The Chief Minister's Office forms part of the Office for the Chief Minister and Cabinet within the Cabinet Office.</p>
+        <p class="govuk-body"><%= link_to "Read about the Cabinet Office", "/government/organisations/cabinet-office", class: "govuk-link" %></p>
+      </div>
+    </div>
+  </div>
+</section>
+<% if @contacts.blank? %>
+  <section class="organisation__margin-bottom organisation__section-wrap" aria-label="Correspondence and updates">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <%= render "govuk_publishing_components/components/heading", {
+          text: "Contact No. 10 Harrington Court",
+          heading_level: 2,
+          padding: true,
+          margin_bottom: 3,
+          border_top: 5,
+          brand: @organisation.brand
+        } %>
+        <h3 class="govuk-heading-s">Ministerial correspondence</h3>
+        <p class="govuk-body">The Cabinet Office publishes a ministerial correspondence service. Use that route for correspondence addressed to Cabinet Office ministers, including matters concerning the Chief Minister's responsibilities within the Cabinet Office.</p>
+        <p class="govuk-body"><%= link_to "Write to Cabinet Office ministers", "https://submit.forms.service.gov.uhrblx.com/form/17", class: "govuk-link" %></p>
+      </div>
+      <div class="govuk-grid-column-one-third">
+        <%= render "govuk_publishing_components/components/heading", {
+          text: "Official updates",
+          heading_level: 2,
+          padding: true,
+          margin_bottom: 3,
+          border_top: 5,
+          brand: @organisation.brand
+        } %>
+        <p class="govuk-body"><%= link_to "Latest news from the Chief Minister's Office", "#latest-news", class: "govuk-link" %></p>
+      </div>
+    </div>
+  </section>
+<% end %>
