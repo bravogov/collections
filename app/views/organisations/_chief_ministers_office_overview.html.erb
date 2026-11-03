@@ -1,6 +1,11 @@
-<%# CMO-specific presentation while native Whitehall promotional features and contacts are being established. %>
+<%# Whitehall promotional features supersede individual fallback cards, while contact and updates remain independent. %>
+<% promoted_titles = Array(@documents.promotional_image_features).map { |feature| feature[:title].to_s.downcase } %>
+<% show_leadership = promoted_titles.none? { |title| title.include?("chief minister") } %>
+<% show_history = promoted_titles.none? { |title| title == "history" } %>
+<% if show_leadership || show_history %>
 <section class="organisation__margin-bottom organisation__section-wrap" aria-label="Chief Minister's Office">
   <div class="govuk-grid-row">
+    <% if show_leadership %>
     <div class="govuk-grid-column-one-half">
       <div class="organisation__promotion">
         <%= render "govuk_publishing_components/components/heading", {
@@ -15,6 +20,8 @@
         <p class="govuk-body"><%= link_to "Meet the Chief Minister", "/government/ministers/chief-minister", class: "govuk-link" %></p>
       </div>
     </div>
+    <% end %>
+    <% if show_history %>
     <div class="govuk-grid-column-one-half">
       <div class="organisation__promotion">
         <%= render "govuk_publishing_components/components/heading", {
@@ -29,11 +36,13 @@
         <p class="govuk-body"><%= link_to "Read about the Cabinet Office", "/government/organisations/cabinet-office", class: "govuk-link" %></p>
       </div>
     </div>
+    <% end %>
   </div>
 </section>
-<% if @organisation.ordered_contacts.blank? %>
+<% end %>
   <section class="organisation__margin-bottom organisation__section-wrap" aria-label="Correspondence and updates">
     <div class="govuk-grid-row">
+      <% if @organisation.ordered_contacts.blank? %>
       <div class="govuk-grid-column-two-thirds">
         <%= render "govuk_publishing_components/components/heading", {
           text: "Contact No. 10 Harrington Court",
@@ -47,6 +56,7 @@
         <p class="govuk-body">The Cabinet Office publishes a ministerial correspondence service. Use that route for correspondence addressed to Cabinet Office ministers, including matters concerning the Chief Minister's responsibilities within the Cabinet Office.</p>
         <p class="govuk-body"><%= link_to "Write to Cabinet Office ministers", "https://submit.forms.service.gov.uhrblx.com/form/17", class: "govuk-link" %></p>
       </div>
+      <% end %>
       <div class="govuk-grid-column-one-third">
         <%= render "govuk_publishing_components/components/heading", {
           text: "Official updates",
@@ -60,4 +70,3 @@
       </div>
     </div>
   </section>
-<% end %>
