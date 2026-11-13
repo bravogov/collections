@@ -36,7 +36,7 @@ on:
 jobs:
   pact_verify:
     name: Verify pact tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       RAILS_ENV: test
     steps:
