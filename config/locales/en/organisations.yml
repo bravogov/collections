@@ -2,6 +2,11 @@
 en:
   organisations:
     about_page_path: "/government/organisations/%{organisation}/about"
+    no10_overview:
+      leadership_summary: "The Chief Minister leads the Government of United Hampshire. The official role page provides the current officeholder, their responsibilities and a link to their biography."
+      history_summary: "United Hampshire adopted its present name in September 2025 after operating as Hampshire Roleplay Community. No. 10 Harrington Court is the Chief Minister's principal official executive office and forms part of the Office for the Chief Minister and Cabinet within the Cabinet Office."
+      correspondence_heading: "Ministerial correspondence"
+      correspondence_summary: "The Cabinet Office publishes a ministerial correspondence service. Use that route for correspondence addressed to Cabinet Office ministers, including matters concerning the Chief Minister's responsibilities within the Cabinet Office."
     administered_by: Administered by
     all_news_link: All news
     breadcrumbs:

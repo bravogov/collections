@@ -20,6 +20,9 @@
   <%= render partial: 'latest_news' %>
   <%= render partial: 'videos' if @documents.has_promotional_video_feature? %>
   <%= render partial: 'promotional_features_side_by_side' %>
+  <% if @organisation.slug == 'chief-ministers-office-10-harrington-court' %>
+    <%= render partial: 'chief_ministers_office_overview' %>
+  <% end %>
 <% else %>
   <%= render partial: 'featured_news' %>
   <%= render partial: 'latest_documents' %>
