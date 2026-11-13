@@ -232,6 +232,16 @@ class Organisation
     details["ordered_corporate_information_pages"]
   end
 
+  # The live Content Store is authoritative for a published About page.
+  # An unpublished page may redirect to the organisation profile, so
+  # a successful HTTP response alone does not prove publication.
+  def published_about_page?(about_page_path)
+    page = ContentItem.find!(about_page_path)
+    page.base_path == about_page_path && page.document_type == "about"
+  rescue GdsApi::Base::ItemNotFound, GdsApi::HTTPGone
+    false
+  end
+
   def secondary_corporate_information
     details["secondary_corporate_information_pages"]
   end
