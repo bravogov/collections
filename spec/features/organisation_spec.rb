@@ -50,6 +50,15 @@ RSpec.describe "Organisation pages" do
     stub_content_and_search(content_item_wales_office)
     stub_content_and_search(content_item_blank)
     stub_content_and_search(content_item_separate_student_loans)
+    # Check the actual live content, not only an organisation's list of
+    # corporate information pages. A missing About route can redirect home.
+    about_path = "/government/organisations/attorney-generals-office/about"
+    stub_content_store_has_item(about_path, content_item_for_base_path(about_path).merge("document_type" => "about"))
+    stub_content_store_has_item("/government/organisations/charity-commission/about", content_item_charity_commission)
+    stub_content_store_does_not_have_item("/government/organisations/prime-ministers-office-10-downing-street/about")
+    stub_content_store_does_not_have_item("/government/organisations/office-of-the-secretary-of-state-for-wales/about")
+    stub_content_store_does_not_have_item("/government/organisations/office-of-the-secretary-of-state-for-wales/about.cy")
+    stub_content_store_does_not_have_item("/government/organisations/student-loans-company/about")
     stub_latest_news_for_organisation("prime-ministers-office-10-downing-street")
     stub_content_store_has_item("/government/organisations/office-of-the-secretary-of-state-for-wales.cy", content_item_wales_office_cy)
     stub_content_store_has_item("/government/news/attorney-general-launches-recruitment-campaign-for-new-chief-inspector", content_item_for_base_path("/government/news/attorney-general-launches-recruitment-campaign-for-new-chief-inspector"))
@@ -322,12 +331,20 @@ RSpec.describe "Organisation pages" do
     expect(page).to have_css(".gem-c-image-card .gem-c-image-card__title-link", text: "Rowena Collins Rice")
   end
 
-  it "show a link to the correct about page on Welsh and English pages" do
+  it "links to a published About edition present in the live Content Store" do
     visit "/government/organisations/attorney-generals-office"
     expect(page).to have_css("a[href='/government/organisations/attorney-generals-office/about']", text: "Read more about what we do")
+  end
 
-    visit "/government/organisations/office-of-the-secretary-of-state-for-wales.cy"
-    expect(page).to have_css("a[href='/government/organisations/office-of-the-secretary-of-state-for-wales/about.cy']", text: "Darllenwch fwy am beth rydyn ni'n wneud")
+  it "does not link to an unpublished About page redirected to its organisation profile" do
+    visit "/government/organisations/charity-commission"
+    expect(page).not_to have_css("a[href='/government/organisations/charity-commission/about']")
+  end
+
+  it "does not link when the About edition is absent" do
+    stub_content_store_does_not_have_item("/government/organisations/attorney-generals-office/about")
+    visit "/government/organisations/attorney-generals-office"
+    expect(page).not_to have_css("a[href='/government/organisations/attorney-generals-office/about']")
   end
 
   it "shows translated text on welsh pages" do

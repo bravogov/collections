@@ -17,12 +17,13 @@
         } do %>
           <%= @organisation.body.html_safe %>
 
-          <% unless @organisation.is_court_or_hmcts_tribunal? %>
-          <p>
-            <a href="<%= t('organisations.about_page_path', organisation: @organisation.slug, language_code: I18n.locale) %>" class="govuk-link brand__color">
-              <%= t('organisations.read_more') %>
-            </a>
-          </p>
+          <% about_page_path = t('organisations.about_page_path', organisation: @organisation.slug, language_code: I18n.locale) %>
+          <% if !@organisation.is_court_or_hmcts_tribunal? && @organisation.published_about_page?(about_page_path) %>
+            <p>
+              <a href="<%= about_page_path %>" class="govuk-link brand__color">
+                <%= t('organisations.read_more') %>
+              </a>
+            </p>
           <% end %>
       <% end %>
     </div>
