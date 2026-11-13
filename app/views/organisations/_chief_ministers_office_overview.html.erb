@@ -16,7 +16,7 @@
           border_top: 5,
           brand: @organisation.brand
         } %>
-        <p class="govuk-body">The Chief Minister leads the Government of United Hampshire. The official role page provides the current officeholder, their responsibilities and a link to their biography.</p>
+        <p class="govuk-body"><%= t("organisations.no10_overview.leadership_summary") %></p>
         <p class="govuk-body"><%= link_to "Meet the Chief Minister", "/government/ministers/chief-minister", class: "govuk-link" %></p>
       </div>
     </div>
@@ -32,7 +32,7 @@
           border_top: 5,
           brand: @organisation.brand
         } %>
-        <p class="govuk-body">United Hampshire adopted its present name in September 2025 after operating as Hampshire Roleplay Community. No. 10 Harrington Court is the Chief Minister's principal official executive office and forms part of the Office for the Chief Minister and Cabinet within the Cabinet Office.</p>
+        <p class="govuk-body"><%= t("organisations.no10_overview.history_summary") %></p>
         <p class="govuk-body"><%= link_to "Read about the Cabinet Office", "/government/organisations/cabinet-office", class: "govuk-link" %></p>
       </div>
     </div>
@@ -52,8 +52,8 @@
           border_top: 5,
           brand: @organisation.brand
         } %>
-        <h3 class="govuk-heading-s">Ministerial correspondence</h3>
-        <p class="govuk-body">The Cabinet Office publishes a ministerial correspondence service. Use that route for correspondence addressed to Cabinet Office ministers, including matters concerning the Chief Minister's responsibilities within the Cabinet Office.</p>
+        <h3 class="govuk-heading-s"><%= t("organisations.no10_overview.correspondence_heading") %></h3>
+        <p class="govuk-body"><%= t("organisations.no10_overview.correspondence_summary") %></p>
         <p class="govuk-body"><%= link_to "Write to Cabinet Office ministers", "https://submit.forms.service.gov.uhrblx.com/form/17", class: "govuk-link" %></p>
       </div>
       <% end %>
