@@ -23,7 +23,7 @@ jobs:
   
   security-analysis:
     name: Security Analysis
-    uses: alphagov/govuk-infrastructure/.github/workflows/brakeman.yml@main
+    uses: ./.github/workflows/brakeman.yml
     secrets: inherit
     permissions:
       contents: read
@@ -48,11 +48,11 @@ jobs:
 
   lint-ruby:
     name: Lint Ruby
-    uses: alphagov/govuk-infrastructure/.github/workflows/rubocop.yml@main
+    uses: ./.github/workflows/rubocop.yml
 
   test-javascript:
     name: Test JavaScript
-    uses: alphagov/govuk-infrastructure/.github/workflows/jasmine.yml@main
+    uses: ./.github/workflows/jasmine.yml
     with:
       useWithRails: true
 
@@ -68,7 +68,7 @@ jobs:
 
   integration-tests:
     name: Integration tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
