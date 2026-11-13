@@ -1,0 +1,59 @@
+name: Run Brakeman
+
+on:
+  workflow_call:
+    secrets:
+      BUNDLER_GITHUB_TOKEN:
+        required: false
+        description: "Token used for Bundler to authenticate when installing gems from private Github repos"
+
+jobs:
+  run-brakeman:
+    name: Run Brakeman
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          show-progress: false
+      - uses: ruby/setup-ruby@b3aaceaef7e0ee231b499e7b5f49c03fc1d32199 # v1.338.0
+        with:
+          bundler-cache: true
+        env:
+          BUNDLE_GITHUB__COM: "x-access-token:${{ secrets.BUNDLER_GITHUB_TOKEN }}"
+
+      - name: Run Brakeman
+        run: |
+          bundle exec brakeman . --except CheckRenderInline --quiet \
+            --no-exit-on-warn --no-exit-on-error \
+            -o brakeman.json -o brakeman.sarif
+
+      - name: Strip suppressed results from SARIF
+        run: |
+          ruby -rjson -e 's=JSON.parse(File.read("brakeman.sarif"));
+            s["runs"]&.each{|r| r["results"] = (r["results"]||[]).reject{|res| res["suppressions"] && !res["suppressions"].empty? }};
+            File.write("brakeman.filtered.sarif", JSON.pretty_generate(s))'
+
+      - name: Upload SARIF to GitHub
+        if: github.repository_visibility == 'public'
+        uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
+        with:
+          sarif_file: brakeman.filtered.sarif
+          category: brakeman
+
+      - name: Upload JSON results
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: brakeman-json
+          path: brakeman.json
+
+      - name: Upload SARIF artifacts
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: brakeman-sarif
+          path: |
+            brakeman.sarif
+            brakeman.filtered.sarif
