@@ -29,6 +29,13 @@ module Organisations
       }
     end
 
+    # Do not offer a subscription action until the live email-alert service is available.
+    # The default is deliberately off for GOV.UH. The E01 release owner must only
+    # enable it after the complete public signup and notification path is accepted.
+    def email_signup_available?
+      ENV.fetch("GOVUH_EMAIL_SIGNUP_ENABLED", "false") == "true"
+    end
+
     def parent_organisations
       parent_orgs = @org.ordered_parent_organisations
       return if parent_orgs.blank?
