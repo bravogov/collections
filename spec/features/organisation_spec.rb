@@ -212,7 +212,19 @@ RSpec.describe "Organisation pages" do
     expect(page).to have_css("a[href='/search/all?organisations[]=attorney-generals-office&order=updated-newest&parent=attorney-generals-office']", text: "See all")
   end
 
-  it "shows subscription links" do
+  it "does not show subscription links when the signup service is unavailable" do
+    allow(ENV).to receive(:fetch).and_call_original
+    allow(ENV).to receive(:fetch).with("GOVUH_EMAIL_SIGNUP_ENABLED", "false").and_return("false")
+
+    visit "/government/organisations/attorney-generals-office"
+    expect(page).not_to have_css("a[href='/email-signup?link=/government/organisations/attorney-generals-office']")
+    expect(page).not_to have_css("#latest-documents [data-ga4-link*='subscribe']")
+  end
+
+  it "shows subscription links when the signup service has been enabled" do
+    allow(ENV).to receive(:fetch).and_call_original
+    allow(ENV).to receive(:fetch).with("GOVUH_EMAIL_SIGNUP_ENABLED", "false").and_return("true")
+
     visit "/government/organisations/attorney-generals-office"
     expect(page).to have_css("a[href='/email-signup?link=/government/organisations/attorney-generals-office']", text: "Get emails")
   end
@@ -549,7 +561,10 @@ RSpec.describe "Organisation pages" do
     test_ga4_see_all_link("Latest from the Office of the Secretary of State for Wales", "Gweld yr holl ddogfennau diweddaraf")
   end
 
-  it "has GA4 tracking on the get emails link" do
+  it "has GA4 tracking on the get emails link when available" do
+    allow(ENV).to receive(:fetch).and_call_original
+    allow(ENV).to receive(:fetch).with("GOVUH_EMAIL_SIGNUP_ENABLED", "false").and_return("true")
+
     visit "/government/organisations/attorney-generals-office"
     test_ga4_get_emails_link
 

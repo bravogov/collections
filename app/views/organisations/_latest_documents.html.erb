@@ -25,12 +25,14 @@
         </a>
       </p>
 
-      <div
-        data-module="ga4-link-tracker"
-        data-ga4-link="<%= { "event_name": "navigation", "type": "subscribe", "index_link": 1, "index_total": 1, "section": ga4_section }.to_json %>"
-      >
-        <%= render "govuk_publishing_components/components/subscription_links", @show.subscription_links %>
-      </div>
+      <% if @show.email_signup_available? %>
+        <div
+          data-module="ga4-link-tracker"
+          data-ga4-link="<%= { "event_name": "navigation", "type": "subscribe", "index_link": 1, "index_total": 1, "section": ga4_section }.to_json %>"
+        >
+          <%= render "govuk_publishing_components/components/subscription_links", @show.subscription_links %>
+        </div>
+      <% end %>
     </div>
   </div>
 </section>

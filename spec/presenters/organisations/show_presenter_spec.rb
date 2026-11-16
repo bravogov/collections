@@ -72,6 +72,24 @@ RSpec.describe Organisations::ShowPresenter do
     end
   end
 
+  describe "#email_signup_available?" do
+    let(:presenter) { build_show_presenter_for_org("Government Digital Service", "executive_agency") }
+
+    it "does not advertise an unavailable email signup service" do
+      allow(ENV).to receive(:fetch).and_call_original
+      allow(ENV).to receive(:fetch).with("GOVUH_EMAIL_SIGNUP_ENABLED", "false").and_return("false")
+
+      expect(presenter.email_signup_available?).to be(false)
+    end
+
+    it "allows the subscription link only after explicit service enablement" do
+      allow(ENV).to receive(:fetch).and_call_original
+      allow(ENV).to receive(:fetch).with("GOVUH_EMAIL_SIGNUP_ENABLED", "false").and_return("true")
+
+      expect(presenter.email_signup_available?).to be(true)
+    end
+  end
+
   it "returns a link to a parent organisation" do
     content_hash = {
       title: "Export Control Joint Unit",
