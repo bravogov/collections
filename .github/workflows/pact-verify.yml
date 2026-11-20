@@ -44,7 +44,7 @@ jobs:
         with:
           repository: ${{ github.repository }}
           ref: ${{ inputs.ref }}
-      - uses: ruby/setup-ruby@e8944e80fb94b20106697132f8c20c665fab29e9 # v1.325.0
+      - uses: ruby/setup-ruby@4e97ecde5048e1e0816923020652678063ffbf65 # v1.339.0
         with:
           bundler-cache: true
       - if: inputs.pact_artifact == ''
